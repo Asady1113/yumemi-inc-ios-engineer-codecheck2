@@ -20,18 +20,18 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         searchBar.text = "GitHubのリポジトリを検索できるよー"
         searchBar.delegate = self
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        // ↓こうすれば初期のテキストを消せる
+        //初期のテキストを消す処理
         searchBar.text = ""
         return true
     }
 
     func searchBar(_: UISearchBar, textDidChange _: String) {
+        //テキストが変更されたときはサーチをキャンセルする
         searchTask?.cancel()
     }
 
@@ -50,12 +50,13 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
                     }
                 }
             }
-            // これ呼ばなきゃリストが更新されません
+            //リスト更新のための処理
             searchTask?.resume()
         }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        //画面遷移の際の値わたし
         if segue.identifier == "toDetail" {
             let detailVC = segue.destination as! DetailViewController
             detailVC.rootVC = self
@@ -76,7 +77,7 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 画面遷移時に呼ばれる
+        //タップされたセル番号を取得
         selectedIndex = indexPath.row
         performSegue(withIdentifier: "toDetail", sender: self)
     }
