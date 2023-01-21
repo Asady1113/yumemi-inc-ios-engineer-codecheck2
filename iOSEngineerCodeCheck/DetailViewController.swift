@@ -9,43 +9,40 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    
-    @IBOutlet weak var ownerImageView: UIImageView!
-    
-    @IBOutlet weak var repoTitleLabel: UILabel!
-    
-    @IBOutlet weak var repoLanguageLabel: UILabel!
-    
-    @IBOutlet weak var repoStarsLabel: UILabel!
-    @IBOutlet weak var repoWatchersLabel: UILabel!
-    @IBOutlet weak var repoForksLabel: UILabel!
-    @IBOutlet weak var repoIssuesLabel: UILabel!
-    
+    @IBOutlet var ownerImageView: UIImageView!
+
+    @IBOutlet var repoTitleLabel: UILabel!
+
+    @IBOutlet var repoLanguageLabel: UILabel!
+
+    @IBOutlet var repoStarsLabel: UILabel!
+    @IBOutlet var repoWatchersLabel: UILabel!
+    @IBOutlet var repoForksLabel: UILabel!
+    @IBOutlet var repoIssuesLabel: UILabel!
+
     var rootVC: RootViewController!
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let repo = rootVC.repoArray[rootVC.selectedIndex]
-        
+
         repoLanguageLabel.text = "Written in \(repo["language"] as? String ?? "")"
         repoStarsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         repoWatchersLabel.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
         repoForksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         repoIssuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
         getOwnerImage()
-        
     }
-    
-    func getOwnerImage(){
-        
+
+    func getOwnerImage() {
         let repo = rootVC.repoArray[rootVC.selectedIndex]
-        
+
         repoTitleLabel.text = repo["full_name"] as? String
-        
+
         if let owner = repo["owner"] as? [String: Any] {
             if let imageURL = owner["avatar_url"] as? String {
-                URLSession.shared.dataTask(with: URL(string: imageURL)!) { (data, res, err) in
+                URLSession.shared.dataTask(with: URL(string: imageURL)!) { data, _, _ in
                     let ownerImage = UIImage(data: data!)!
                     DispatchQueue.main.async {
                         self.ownerImageView.image = ownerImage
@@ -53,7 +50,5 @@ class DetailViewController: UIViewController {
                 }.resume()
             }
         }
-        
     }
-    
 }
