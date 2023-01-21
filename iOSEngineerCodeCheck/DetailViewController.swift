@@ -25,7 +25,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //RootVCで選択されたrepositoryを代入
+        // RootVCで選択されたrepositoryを代入
         let repo = rootVC.repoArray[rootVC.selectedIndex]
 
         repoLanguageLabel.text = "Written in \(repo["language"] as? String ?? "")"
