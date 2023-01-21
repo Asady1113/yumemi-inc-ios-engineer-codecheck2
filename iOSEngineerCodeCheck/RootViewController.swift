@@ -43,6 +43,7 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
             searchTask = URLSession.shared.dataTask(with: URL(string: searchUrl)!) { data, _, err in
                 // もしエラーが発生した場合
                 if err != nil {
+                    //　後でユーザーにわかる形で表示する
                     print(err!)
                 } else {
                     if let object = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
