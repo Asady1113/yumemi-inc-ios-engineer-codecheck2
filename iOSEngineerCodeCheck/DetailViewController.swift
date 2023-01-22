@@ -25,7 +25,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //RootVCで選択されたrepositoryを代入
+        // RootVCで選択されたrepositoryを代入
         let repo = rootVC.repoArray[rootVC.selectedIndex]
 
         repoLanguageLabel.text = "Written in \(repo["language"] as? String ?? "")"
@@ -43,10 +43,18 @@ class DetailViewController: UIViewController {
 
         if let owner = repo["owner"] as? [String: Any] {
             if let imageURL = owner["avatar_url"] as? String {
-                URLSession.shared.dataTask(with: URL(string: imageURL)!) { data, _, _ in
-                    let ownerImage = UIImage(data: data!)!
-                    DispatchQueue.main.async {
-                        self.ownerImageView.image = ownerImage
+                URLSession.shared.dataTask(with: URL(string: imageURL)!) { data, _, err in
+                    // もしエラーが発生した場合
+                    if err != nil {
+                        //　後でユーザーにわかる形で表示する
+                        print(err!)
+                    } else {
+                        // dataがnilであることを回避
+                        if let ownerImage = UIImage(data: data!) {
+                            DispatchQueue.main.async {
+                                self.ownerImageView.image = ownerImage
+                            }
+                        }
                     }
                 }.resume()
             }

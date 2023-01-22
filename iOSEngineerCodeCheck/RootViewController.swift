@@ -12,10 +12,7 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     @IBOutlet var searchBar: UISearchBar!
 
     var repoArray: [[String: Any]] = []
-
     var searchTask: URLSessionTask?
-    var searchWord: String!
-    var searchUrl: String!
     var selectedIndex: Int!
 
     override func viewDidLoad() {
@@ -25,38 +22,47 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        //初期のテキストを消す処理
+        // 初期のテキストを消す処理
         searchBar.text = ""
         return true
     }
 
     func searchBar(_: UISearchBar, textDidChange _: String) {
-        //テキストが変更されたときはサーチをキャンセルする
+        // テキストが変更されたときはサーチをキャンセルする
         searchTask?.cancel()
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchWord = searchBar.text!
+        let searchWord = searchBar.text!
 
-        if searchWord.count != 0 {
-            searchUrl = "https://api.github.com/search/repositories?q=\(searchWord!)"
-            searchTask = URLSession.shared.dataTask(with: URL(string: searchUrl)!) { data, _, _ in
-                if let object = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
-                    if let items = object["items"] as? [[String: Any]] {
-                        self.repoArray = items
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
+        // 空文字かどうか判定する
+        if searchWord.isEmpty == false {
+            //　検索ワードに日本語が含まれる可能性があるため
+            let searchEncodeString = searchWord.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+            let searchUrl = "https://api.github.com/search/repositories?q=\(searchEncodeString!)"
+            searchTask = URLSession.shared.dataTask(with: URL(string: searchUrl)!) { data, _, err in
+                // もしエラーが発生した場合
+                if err != nil {
+                    //　後でユーザーにわかる形で表示する
+                    print(err!)
+                } else {
+                    if let object = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
+                        if let items = object["items"] as? [[String: Any]] {
+                            self.repoArray = items
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
                         }
                     }
                 }
             }
-            //リスト更新のための処理
+            // リスト更新のための処理
             searchTask?.resume()
         }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        //画面遷移の際の値わたし
+        // 画面遷移の際の値わたし
         if segue.identifier == "toDetail" {
             let detailVC = segue.destination as! DetailViewController
             detailVC.rootVC = self
@@ -77,7 +83,7 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //タップされたセル番号を取得
+        // タップされたセル番号を取得
         selectedIndex = indexPath.row
         performSegue(withIdentifier: "toDetail", sender: self)
     }
