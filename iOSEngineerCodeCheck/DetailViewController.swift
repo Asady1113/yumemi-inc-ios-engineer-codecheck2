@@ -28,7 +28,12 @@ class DetailViewController: UIViewController {
         // RootVCで選択されたrepositoryを代入
         let repo = rootVC.repoArray[rootVC.selectedIndex]
 
+        repoTitleLabel.text = repo["full_name"] as? String
+        // タイトルに合わせてラベルの高さを変える
+        repoTitleLabel.sizeToFit()
         repoLanguageLabel.text = "Written in \(repo["language"] as? String ?? "")"
+        // 言語に合わせてラベルの高さを変える
+        repoLanguageLabel.sizeToFit()
         repoStarsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         repoWatchersLabel.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
         repoForksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
@@ -38,8 +43,6 @@ class DetailViewController: UIViewController {
 
     func getOwnerImage() {
         let repo = rootVC.repoArray[rootVC.selectedIndex]
-
-        repoTitleLabel.text = repo["full_name"] as? String
 
         if let owner = repo["owner"] as? [String: Any] {
             if let imageURL = owner["avatar_url"] as? String {
