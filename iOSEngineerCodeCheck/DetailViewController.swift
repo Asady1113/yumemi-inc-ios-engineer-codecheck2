@@ -35,7 +35,7 @@ class DetailViewController: UIViewController {
         // 言語に合わせてラベルの高さを変える
         repoLanguageLabel.sizeToFit()
         repoStarsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
-        repoWatchersLabel.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
+        repoWatchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
         repoForksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         repoIssuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
         getOwnerImage()
