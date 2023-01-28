@@ -17,7 +17,6 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchBar.text = "GitHubのリポジトリを検索できるよー"
         searchBar.delegate = self
     }
 
