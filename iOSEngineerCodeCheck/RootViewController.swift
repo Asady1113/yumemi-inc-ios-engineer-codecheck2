@@ -9,6 +9,8 @@
 import UIKit
 
 class RootViewController: UITableViewController, UISearchBarDelegate {
+    var rootViewPresenter: RootViewPresenter!
+
     @IBOutlet var searchBar: UISearchBar!
 
     var repoArray: [[String: Any]] = []
@@ -27,36 +29,17 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     func searchBar(_: UISearchBar, textDidChange _: String) {
-        // テキストが変更されたときはサーチをキャンセルする
-        searchTask?.cancel()
+        rootViewPresenter.searchBarTextDidChange()
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let searchWord = searchBar.text!
+        rootViewPresenter.searchBarSearchButtonClicked(searchBar)
+    }
 
-        // 空文字かどうか判定する
-        if searchWord.isEmpty == false {
-            //　検索ワードに日本語が含まれる可能性があるため
-            let searchEncodeString = searchWord.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
-            let searchUrl = "https://api.github.com/search/repositories?q=\(searchEncodeString!)"
-            searchTask = URLSession.shared.dataTask(with: URL(string: searchUrl)!) { data, _, err in
-                // もしエラーが発生した場合
-                if err != nil {
-                    //　後でユーザーにわかる形で表示する
-                    print(err!)
-                } else {
-                    if let object = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
-                        if let items = object["items"] as? [[String: Any]] {
-                            self.repoArray = items
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                            }
-                        }
-                    }
-                }
-            }
-            // リスト更新のための処理
-            searchTask?.resume()
+    // 情報がとってこられたら
+    func didFetchRepo() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
 
@@ -69,12 +52,12 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return repoArray.count
+        return rootViewPresenter.repoArray.count
     }
 
     override func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        let repo = repoArray[indexPath.row]
+        let repo = rootViewPresenter.repoArray[indexPath.row]
         cell.textLabel?.text = repo["full_name"] as? String ?? ""
         cell.detailTextLabel?.text = repo["language"] as? String ?? ""
         cell.tag = indexPath.row
