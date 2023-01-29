@@ -8,9 +8,12 @@
 
 import UIKit
 
-class RootViewModel {
-    let rootViewPresenter = RootViewPresenter()
+protocol RootViewModelInput {
+    func cancelSearch()
+    func searchRepo(searchWord: String) -> [[String: Any]]
+}
 
+class RootViewModel: RootViewModelInput {
     var searchTask: URLSessionTask?
 
     func cancelSearch() {
@@ -19,7 +22,10 @@ class RootViewModel {
     }
 
     // リポジトリを検索
-    func searchRepo(searchWord: String) {
+    func searchRepo(searchWord: String) -> [[String: Any]] {
+        let semaphore = DispatchSemaphore(value: 0)
+
+        var itemArr: [[String: Any]] = []
         // 空文字かどうか判定する
         if searchWord.isEmpty == false {
             //　検索ワードに日本語が含まれる可能性があるため
@@ -33,7 +39,8 @@ class RootViewModel {
                 } else {
                     if let object = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
                         if let items = object["items"] as? [[String: Any]] {
-                            self.rootViewPresenter.repoArray = items
+                            itemArr = items
+                            semaphore.signal()
                         }
                     }
                 }
@@ -41,5 +48,7 @@ class RootViewModel {
             // リスト更新のための処理
             searchTask?.resume()
         }
+        semaphore.wait()
+        return itemArr
     }
 }

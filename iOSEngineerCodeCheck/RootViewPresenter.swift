@@ -8,20 +8,46 @@
 
 import UIKit
 
-class RootViewPresenter {
-    let rootViecController = RootViewController()
-    let rootViewModel = RootViewModel()
+protocol RootViewPresenterInput {
+    var numberOfRepos: Int { get } // レポの数を数える
+    func repo(forRow row: Int) -> [String: Any] // 選択されたレポを選ぶ
+    func didSelectRowAt(_ indexPath: IndexPath) // よーわからん
+}
 
+protocol RootViewPresenterOutput {
+    func didFetchRepo(_ repos: [[String: Any]]) // よーわからん
+}
+
+class RootViewPresenter: RootViewPresenterInput {
     var repoArray: [[String: Any]] = []
 
+    var view: RootViewPresenterOutput?
+    var dataModel: RootViewModelInput
+
+    init(with view: RootViewPresenterOutput) {
+        self.view = view
+        dataModel = RootViewModel()
+    }
+
+    var numberOfRepos: Int {
+        return repoArray.count
+    }
+
+    func repo(forRow row: Int) -> [String: Any] {
+        if row >= repoArray.count {
+            return [:]
+        }
+        return repoArray[row]
+    }
+
     func searchBarTextDidChange() {
-        rootViewModel.cancelSearch()
+        dataModel.cancelSearch()
     }
 
     // searchバーを押されたとき
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        rootViewModel.searchRepo(searchWord: searchBar.text!)
-        rootViecController.didFetchRepo()
+        repoArray = dataModel.searchRepo(searchWord: searchBar.text!)
+        view?.didFetchRepo(repoArray)
     }
 
     // tableViewがタップされたとき

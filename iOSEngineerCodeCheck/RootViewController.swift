@@ -9,7 +9,7 @@
 import UIKit
 
 class RootViewController: UITableViewController, UISearchBarDelegate {
-    var rootViewPresenter: RootViewPresenter!
+    var presenter: RootViewPresenter!
 
     @IBOutlet var searchBar: UISearchBar!
 
@@ -19,6 +19,8 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        presenter = RootViewPresenter(with: self)
         searchBar.delegate = self
     }
 
@@ -29,18 +31,11 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     func searchBar(_: UISearchBar, textDidChange _: String) {
-        rootViewPresenter.searchBarTextDidChange()
+        presenter.searchBarTextDidChange()
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        rootViewPresenter.searchBarSearchButtonClicked(searchBar)
-    }
-
-    // 情報がとってこられたら
-    func didFetchRepo() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        presenter.searchBarSearchButtonClicked(searchBar)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
@@ -52,12 +47,12 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return rootViewPresenter.repoArray.count
+        return presenter.numberOfRepos
     }
 
     override func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        let repo = rootViewPresenter.repoArray[indexPath.row]
+        let repo = presenter.repo(forRow: indexPath.row)
         cell.textLabel?.text = repo["full_name"] as? String ?? ""
         cell.detailTextLabel?.text = repo["language"] as? String ?? ""
         cell.tag = indexPath.row
@@ -68,5 +63,14 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
         // タップされたセル番号を取得
         selectedIndex = indexPath.row
         performSegue(withIdentifier: "toDetail", sender: self)
+    }
+}
+
+extension RootViewController: RootViewPresenterOutput {
+    // 情報がとってこられたら
+    func didFetchRepo(_: [[String: Any]]) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
