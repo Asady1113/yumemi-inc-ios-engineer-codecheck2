@@ -8,29 +8,29 @@
 
 import UIKit
 
-// Presenter側のプロトコル
-protocol RootViewPresenterInput {
+// view → Presenter
+protocol RootPresenterInput {
     var numberOfRepos: Int { get } // レポの数を数える
     func repo(forRow row: Int) -> [String: Any] // 選択されたレポを選ぶ
     func didSelectRowAt(_ indexPath: IndexPath) // セルが選択された時
 }
 
-// View側のプロトコル
-protocol RootViewPresenterOutput {
+// Presenter → View
+protocol RootPresenterOutput {
     func didFetchRepo(_ repos: [[String: Any]]) // レポジトリが撮ってこられたときにViewに行ってほしい処理
     func performSegue(id: String) // 画面遷移
 }
 
-class RootViewPresenter: RootViewPresenterInput {
+class RootPresenter: RootPresenterInput {
     var repoArray: [[String: Any]] = []
     var selectedIndex: Int!
 
-    var view: RootViewPresenterOutput?
-    var dataModel: RootViewModelInput
+    var view: RootPresenterOutput?
+    var dataModel: RootModelInput
 
-    init(with view: RootViewPresenterOutput) {
+    init(with view: RootPresenterOutput) {
         self.view = view
-        dataModel = RootViewModel()
+        dataModel = RootModel()
     }
 
     var numberOfRepos: Int {

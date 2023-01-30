@@ -9,14 +9,14 @@
 import UIKit
 
 class RootViewController: UITableViewController, UISearchBarDelegate {
-    var presenter: RootViewPresenter!
+    var presenter: RootPresenter!
 
     @IBOutlet var searchBar: UISearchBar!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter = RootViewPresenter(with: self)
+        presenter = RootPresenter(with: self)
         searchBar.delegate = self
     }
 
@@ -52,7 +52,7 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 }
 
-extension RootViewController: RootViewPresenterOutput {
+extension RootViewController: RootPresenterOutput {
     // 情報がとってこられたら
     func didFetchRepo(_: [[String: Any]]) {
         DispatchQueue.main.async {

@@ -8,12 +8,12 @@
 
 import UIKit
 
-protocol RootViewModelInput {
+protocol RootModelInput {
     func cancelSearch()
     func searchRepo(searchWord: String) -> [[String: Any]]
 }
 
-class RootViewModel: RootViewModelInput {
+class RootModel: RootModelInput {
     var searchTask: URLSessionTask?
 
     func cancelSearch() {

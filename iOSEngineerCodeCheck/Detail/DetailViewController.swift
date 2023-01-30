@@ -20,10 +20,14 @@ class DetailViewController: UIViewController {
     @IBOutlet var repoForksLabel: UILabel!
     @IBOutlet var repoIssuesLabel: UILabel!
 
+    var presenter: DetailPresenter!
     var repo: [String: Any] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        presenter = DetailPresenter(with: self)
+        presenter.getOwnerImage(repo: repo)
 
         repoTitleLabel.text = repo["full_name"] as? String
         // タイトルに合わせてラベルの高さを変える
@@ -35,27 +39,13 @@ class DetailViewController: UIViewController {
         repoWatchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
         repoForksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         repoIssuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
-        getOwnerImage()
     }
+}
 
-    func getOwnerImage() {
-        if let owner = repo["owner"] as? [String: Any] {
-            if let imageURL = owner["avatar_url"] as? String {
-                URLSession.shared.dataTask(with: URL(string: imageURL)!) { data, _, err in
-                    // もしエラーが発生した場合
-                    if err != nil {
-                        //　後でユーザーにわかる形で表示する
-                        print(err!)
-                    } else {
-                        // dataがnilであることを回避
-                        if let ownerImage = UIImage(data: data!) {
-                            DispatchQueue.main.async {
-                                self.ownerImageView.image = ownerImage
-                            }
-                        }
-                    }
-                }.resume()
-            }
+extension DetailViewController: DetailPresenterOutput {
+    func didFetchImage(ownerImage: UIImage) {
+        DispatchQueue.main.async {
+            self.ownerImageView.image = ownerImage
         }
     }
 }
