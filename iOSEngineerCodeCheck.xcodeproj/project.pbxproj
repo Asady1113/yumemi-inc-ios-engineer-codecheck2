@@ -11,6 +11,7 @@
 		940EDDB7298581A500C0CF87 /* RootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940EDDB6298581A500C0CF87 /* RootPresenter.swift */; };
 		9493D4A92987BB57002D3D43 /* DetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9493D4A82987BB57002D3D43 /* DetailModel.swift */; };
 		9493D4AB2987BCC3002D3D43 /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9493D4AA2987BCC3002D3D43 /* DetailPresenter.swift */; };
+		9493D4AF2987E4A7002D3D43 /* noimage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9493D4AE2987E4A7002D3D43 /* noimage.jpeg */; };
 		BF0A658D244F2A3B00280FA6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0A658C244F2A3B00280FA6 /* DetailViewController.swift */; };
 		BFD945DF244DC5E80012785A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD945DE244DC5E80012785A /* AppDelegate.swift */; };
 		BFD945E1244DC5E80012785A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD945E0244DC5E80012785A /* SceneDelegate.swift */; };
@@ -44,6 +45,7 @@
 		940EDDB6298581A500C0CF87 /* RootPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPresenter.swift; sourceTree = "<group>"; };
 		9493D4A82987BB57002D3D43 /* DetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailModel.swift; sourceTree = "<group>"; };
 		9493D4AA2987BCC3002D3D43 /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		9493D4AE2987E4A7002D3D43 /* noimage.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = noimage.jpeg; sourceTree = "<group>"; };
 		BF0A658C244F2A3B00280FA6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BFD945DB244DC5E80012785A /* iOSEngineerCodeCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSEngineerCodeCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFD945DE244DC5E80012785A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			children = (
 				BFD945DE244DC5E80012785A /* AppDelegate.swift */,
 				BFD945E0244DC5E80012785A /* SceneDelegate.swift */,
+				9493D4AE2987E4A7002D3D43 /* noimage.jpeg */,
 				9493D4AC2987C448002D3D43 /* Root */,
 				9493D4AD2987C460002D3D43 /* Detail */,
 				BFD945E4244DC5E80012785A /* Main.storyboard */,
@@ -264,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9493D4AF2987E4A7002D3D43 /* noimage.jpeg in Resources */,
 				BFD945EB244DC5EB0012785A /* LaunchScreen.storyboard in Resources */,
 				BFD945E8244DC5EB0012785A /* Assets.xcassets in Resources */,
 				BFD945E6244DC5E80012785A /* Main.storyboard in Resources */,

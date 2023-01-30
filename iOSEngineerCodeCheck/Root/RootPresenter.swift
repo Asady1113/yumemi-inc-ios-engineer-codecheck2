@@ -12,6 +12,8 @@ import UIKit
 protocol RootPresenterInput {
     var numberOfRepos: Int { get } // レポの数を数える
     func repo(forRow row: Int) -> [String: Any] // 選択されたレポを選ぶ
+    func searchBarTextDidChange()
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
     func didSelectRowAt(_ indexPath: IndexPath) // セルが選択された時
 }
 

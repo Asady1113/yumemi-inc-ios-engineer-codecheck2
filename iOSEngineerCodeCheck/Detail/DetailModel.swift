@@ -18,7 +18,7 @@ class DetailModel: DetailModelInput {
         // 非同期処理への対応
         let semaphore = DispatchSemaphore(value: 0)
 
-        var ownerImage: UIImage?
+        var ownerImage = UIImage(named: "noimage.jpeg")!
 
         if let owner = repo["owner"] as? [String: Any] {
             if let imageURL = owner["avatar_url"] as? String {
@@ -37,8 +37,7 @@ class DetailModel: DetailModelInput {
                 }.resume()
             }
         }
-        // 強制アンラップ危険やな、、プレイスホルダー入れたほうがいいかも
         semaphore.wait()
-        return ownerImage!
+        return ownerImage
     }
 }
