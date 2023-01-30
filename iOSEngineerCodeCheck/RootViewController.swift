@@ -13,10 +13,6 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
 
     @IBOutlet var searchBar: UISearchBar!
 
-    var repoArray: [[String: Any]] = []
-    var searchTask: URLSessionTask?
-    var selectedIndex: Int!
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,14 +34,6 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
         presenter.searchBarSearchButtonClicked(searchBar)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        // 画面遷移の際の値わたし
-        if segue.identifier == "toDetail" {
-            let detailVC = segue.destination as! DetailViewController
-            detailVC.rootVC = self
-        }
-    }
-
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         return presenter.numberOfRepos
     }
@@ -60,9 +48,7 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // タップされたセル番号を取得
-        selectedIndex = indexPath.row
-        performSegue(withIdentifier: "toDetail", sender: self)
+        presenter.didSelectRowAt(indexPath)
     }
 }
 
@@ -71,6 +57,18 @@ extension RootViewController: RootViewPresenterOutput {
     func didFetchRepo(_: [[String: Any]]) {
         DispatchQueue.main.async {
             self.tableView.reloadData()
+        }
+    }
+
+    func performSegue(id: String) {
+        performSegue(withIdentifier: id, sender: self)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        // 画面遷移の際の値わたし
+        if segue.identifier == "toDetail" {
+            let detailVC = segue.destination as! DetailViewController
+            detailVC.repo = presenter.repoArray[presenter.selectedIndex]
         }
     }
 }

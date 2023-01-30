@@ -23,6 +23,7 @@ class RootViewModel: RootViewModelInput {
 
     // リポジトリを検索
     func searchRepo(searchWord: String) -> [[String: Any]] {
+        // 非同期処理への対応
         let semaphore = DispatchSemaphore(value: 0)
 
         var itemArr: [[String: Any]] = []
