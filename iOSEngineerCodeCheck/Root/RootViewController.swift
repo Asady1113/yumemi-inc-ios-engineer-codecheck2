@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootViewController: UITableViewController, UISearchBarDelegate {
+class RootViewController: UITableViewController {
     var presenter: RootPresenter!
 
     @IBOutlet var searchBar: UISearchBar!
@@ -18,20 +18,6 @@ class RootViewController: UITableViewController, UISearchBarDelegate {
 
         presenter = RootPresenter(with: self)
         searchBar.delegate = self
-    }
-
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        // 初期のテキストを消す処理
-        searchBar.text = ""
-        return true
-    }
-
-    func searchBar(_: UISearchBar, textDidChange _: String) {
-        presenter.searchBarTextDidChange()
-    }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        presenter.searchBarSearchButtonClicked(searchBar)
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
@@ -70,5 +56,21 @@ extension RootViewController: RootPresenterOutput {
             let detailVC = segue.destination as! DetailViewController
             detailVC.repo = presenter.repoArray[presenter.selectedIndex]
         }
+    }
+}
+
+extension RootViewController: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        // 初期のテキストを消す処理(Viewの処理のみで完結するので、Presenterに渡さない）
+        searchBar.text = ""
+        return true
+    }
+
+    func searchBar(_: UISearchBar, textDidChange _: String) {
+        presenter.searchBarTextDidChange()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        presenter.searchBarSearchButtonClicked(searchBar)
     }
 }
