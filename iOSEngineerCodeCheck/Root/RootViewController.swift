@@ -19,6 +19,8 @@ class RootViewController: UITableViewController {
 
         presenter = RootPresenter(with: self)
         searchBar.delegate = self
+        // 検索時の文頭を小文字に
+        searchBar.autocapitalizationType = .none
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
