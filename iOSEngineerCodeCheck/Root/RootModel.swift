@@ -10,7 +10,7 @@ import UIKit
 
 protocol RootModelInput {
     func cancelSearch()
-    func searchRepo(searchWord: String) -> [[String: Any]]
+    func searchRepo(searchWord: String) -> (itemArr: [[String: Any]], error: Error?)
 }
 
 class RootModel: RootModelInput {
@@ -22,11 +22,12 @@ class RootModel: RootModelInput {
     }
 
     // リポジトリを検索
-    func searchRepo(searchWord: String) -> [[String: Any]] {
+    func searchRepo(searchWord: String) -> (itemArr: [[String: Any]], error: Error?) {
         // 非同期処理への対応
         let semaphore = DispatchSemaphore(value: 0)
 
         var itemArr: [[String: Any]] = []
+        var error: Error?
         // 空文字かどうか判定する
         if searchWord.isEmpty == false {
             //　検索ワードに日本語が含まれる可能性があるため
@@ -35,8 +36,7 @@ class RootModel: RootModelInput {
             searchTask = URLSession.shared.dataTask(with: URL(string: searchUrl)!) { data, _, err in
                 // もしエラーが発生した場合
                 if err != nil {
-                    //　後でユーザーにわかる形で表示する
-                    print(err!)
+                    error = err
                 } else {
                     if let object = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
                         if let items = object["items"] as? [[String: Any]] {
@@ -50,6 +50,6 @@ class RootModel: RootModelInput {
             searchTask?.resume()
         }
         semaphore.wait()
-        return itemArr
+        return (itemArr, error)
     }
 }

@@ -20,6 +20,7 @@ protocol RootPresenterInput {
 // Presenter → View
 protocol RootPresenterOutput {
     func didFetchRepo(_ repos: [[String: Any]]) // レポジトリが撮ってこられたときにViewに行ってほしい処理
+    func didFetchError(error: Error) // エラーを受け取った時
     func performSegue(id: String) // 画面遷移
 }
 
@@ -54,8 +55,13 @@ class RootPresenter: RootPresenterInput {
     // searchバーを押されたとき
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // モデルでリポを検索、結果をViewに送る
-        repoArray = dataModel.searchRepo(searchWord: searchBar.text!)
-        view?.didFetchRepo(repoArray)
+        let result = dataModel.searchRepo(searchWord: searchBar.text!)
+        if result.error != nil {
+            view?.didFetchError(error: result.error!)
+        } else {
+            repoArray = result.itemArr
+            view?.didFetchRepo(repoArray)
+        }
     }
 
     // tableViewがタップされたとき

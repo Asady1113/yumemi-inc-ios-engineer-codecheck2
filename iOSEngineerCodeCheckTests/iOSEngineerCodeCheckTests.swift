@@ -43,5 +43,4 @@ class iOSEngineerCodeCheckTests: XCTestCase {
         let resultImage = detailModel.getOwnerImage(repo: [:])
         XCTAssertEqual(resultImage, UIImage(named: "noimage.jpeg"))
     }
-
 }
