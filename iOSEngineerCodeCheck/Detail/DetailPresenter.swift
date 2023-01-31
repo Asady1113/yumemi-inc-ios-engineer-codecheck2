@@ -12,6 +12,8 @@ import UIKit
 protocol DetailPresenterOutput {
     // オーナーのイメージ取得後の処理
     func didFetchImage(ownerImage: UIImage)
+    // もしエラーが生じたら
+    func didFetchError(error: Error)
 }
 
 // view → Presenter
@@ -31,7 +33,12 @@ class DetailPresenter: DetailPresenterInput {
 
     // ownerの画像取得をモデルに依頼、帰ってきたものをViewへ
     func getOwnerImage(repo: [String: Any]) {
-        let ownerImage = dataModel.getOwnerImage(repo: repo)
-        view?.didFetchImage(ownerImage: ownerImage)
+        let result = dataModel.getOwnerImage(repo: repo)
+        // エラーの有無を判定
+        if result.error != nil {
+            view?.didFetchError(error: result.error!)
+        } else {
+            view?.didFetchImage(ownerImage: result.ownerImage)
+        }
     }
 }

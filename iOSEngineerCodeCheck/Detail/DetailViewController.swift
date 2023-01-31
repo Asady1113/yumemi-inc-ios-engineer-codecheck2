@@ -6,6 +6,7 @@
 //  Copyright © 2020 YUMEMI Inc. All rights reserved.
 //
 
+import KRProgressHUD
 import UIKit
 
 class DetailViewController: UIViewController {
@@ -51,5 +52,9 @@ extension DetailViewController: DetailPresenterOutput {
         DispatchQueue.main.async {
             self.ownerImageView.image = ownerImage
         }
+    }
+
+    func didFetchError(error: Error) {
+        KRProgressHUD.showError(withMessage: error.localizedDescription)
     }
 }

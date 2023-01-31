@@ -48,6 +48,10 @@ extension RootViewController: RootPresenterOutput {
         }
     }
 
+    func didFetchError(error: Error) {
+        KRProgressHUD.showError(withMessage: error.localizedDescription)
+    }
+
     func performSegue(id: String) {
         performSegue(withIdentifier: id, sender: self)
     }
