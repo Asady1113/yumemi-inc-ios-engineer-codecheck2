@@ -10,23 +10,38 @@
 import XCTest
 
 class iOSEngineerCodeCheckTests: XCTestCase {
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func test_入力時何らかのリポジトリが検索されれば成功() {
+        let rootModel = RootModel()
+        // 実行
+        let result = rootModel.searchRepo(searchWord: "Swift")
+        let result_count = result.count
+        // 検証
+        XCTAssertNotEqual(result_count, 0)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func test_日本語入力時もnilにならなければ成功() {
+        let rootModel = RootModel()
+        // 実行
+        let result = rootModel.searchRepo(searchWord: "ああああ")
+        let result_count = result.count
+        // 検証
+        XCTAssertNotNil(result_count)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func test_空入力時は何も検索しない() {
+        let rootModel = RootModel()
+        // 実行
+        let result = rootModel.searchRepo(searchWord: "")
+        let result_count = result.count
+        // 検証
+        XCTAssertEqual(result_count, 0)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
+    func test_画像がないときplaceholderになっていたら成功() {
+        let detailModel = DetailModel()
+        // 実行
+        let resultImage = detailModel.getOwnerImage(repo: [:])
+        XCTAssertEqual(resultImage, UIImage(named: "noimage.jpeg"))
     }
+
 }
