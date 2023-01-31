@@ -30,15 +30,19 @@ class DetailViewController: UIViewController {
         presenter.getOwnerImage(repo: repo)
 
         repoTitleLabel.text = repo["full_name"] as? String
-        // タイトルに合わせてラベルの高さを変える
-        repoTitleLabel.sizeToFit()
         repoLanguageLabel.text = "Written in \(repo["language"] as? String ?? "")"
-        // 言語に合わせてラベルの高さを変える
-        repoLanguageLabel.sizeToFit()
+        //内容に合わせてラベルのサイズを変える
+        changeLabelSize(label: repoTitleLabel)
+        changeLabelSize(label: repoLanguageLabel)
+        
         repoStarsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         repoWatchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
         repoForksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         repoIssuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
+    }
+    
+    func changeLabelSize(label: UILabel) {
+        label.sizeToFit()
     }
 }
 
