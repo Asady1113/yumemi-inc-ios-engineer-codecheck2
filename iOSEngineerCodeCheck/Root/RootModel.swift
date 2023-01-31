@@ -6,7 +6,6 @@
 //  Copyright © 2023 YUMEMI Inc. All rights reserved.
 //
 
-import KRProgressHUD
 import UIKit
 
 protocol RootModelInput {
