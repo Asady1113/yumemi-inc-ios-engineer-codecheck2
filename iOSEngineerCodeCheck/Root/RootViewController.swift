@@ -6,6 +6,7 @@
 //  Copyright © 2020 YUMEMI Inc. All rights reserved.
 //
 
+import KRProgressHUD
 import UIKit
 
 class RootViewController: UITableViewController {
@@ -43,6 +44,7 @@ extension RootViewController: RootPresenterOutput {
     func didFetchRepo(_: [[String: Any]]) {
         DispatchQueue.main.async {
             self.tableView.reloadData()
+            KRProgressHUD.dismiss()
         }
     }
 
@@ -71,6 +73,7 @@ extension RootViewController: UISearchBarDelegate {
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        KRProgressHUD.show()
         presenter.searchBarSearchButtonClicked(searchBar)
     }
 }

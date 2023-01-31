@@ -6,6 +6,7 @@
 //  Copyright © 2023 YUMEMI Inc. All rights reserved.
 //
 
+import KRProgressHUD
 import UIKit
 
 protocol RootModelInput {
@@ -35,8 +36,8 @@ class RootModel: RootModelInput {
             searchTask = URLSession.shared.dataTask(with: URL(string: searchUrl)!) { data, _, err in
                 // もしエラーが発生した場合
                 if err != nil {
-                    //　後でユーザーにわかる形で表示する
-                    print(err!)
+                    //本来ならViewControllerに記述するのがベスト？
+                    KRProgressHUD.showError(withMessage: err?.localizedDescription)
                 } else {
                     if let object = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
                         if let items = object["items"] as? [[String: Any]] {

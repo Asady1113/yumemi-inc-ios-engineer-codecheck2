@@ -6,6 +6,7 @@
 //  Copyright © 2023 YUMEMI Inc. All rights reserved.
 //
 
+import KRProgressHUD
 import UIKit
 
 // Modelへのプロトコル
@@ -25,8 +26,8 @@ class DetailModel: DetailModelInput {
                 URLSession.shared.dataTask(with: URL(string: imageURL)!) { data, _, err in
                     // もしエラーが発生した場合
                     if err != nil {
-                        //　後でユーザーにわかる形で表示する
-                        print(err!)
+                        //本来ならViewControllerに記述するのがベスト？
+                        KRProgressHUD.showError(withMessage: err?.localizedDescription)
                     } else {
                         // dataがnilであることを回避
                         if let image = UIImage(data: data!) {
